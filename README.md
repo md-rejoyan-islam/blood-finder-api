@@ -25,7 +25,7 @@ Clone my-project with npm
 
 ## Tesing with POSTMAN
 
-<a href="">POSTMAN URL </a> <br/>
+<a href="https://documenter.getpostman.com/view/22735243/2sA2xk1rVe">POSTMAN URL </a> <br/>
 
 ## 🔗 Links
 
