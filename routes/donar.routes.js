@@ -48,7 +48,7 @@ bloodRouter
     authorization("admin", "superadmin", "moderator"),
     getSingleBloodDonarById
   )
-  .put(authorization("admin", "superadmin"), updateBloodDonarById)
+  .put(updateBloodDonarById)
   .delete(authorization("admin", "superadmin"), deleteBloodDonarById);
 
 bloodRouter.route("/file").post(fileUpload, uploadDonarFile);

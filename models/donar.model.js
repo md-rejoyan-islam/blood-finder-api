@@ -31,7 +31,7 @@ const donarSchema = {
   phone: {
     type: DataTypes.STRING,
     allowNull: false,
-    // unique: true,
+    unique: true,
     validate: {
       notNull: {
         msg: "Please enter donar phone number",

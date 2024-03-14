@@ -156,12 +156,12 @@ const updateBloodDonarById = asyncHandler(async (req, res, next) => {
   if (!donarData) throw createError(400, "Couldn't find any donar data.");
 
   // increase total donation
-  if (req?.body?.lastDonationDate) {
-    // update total donation
-    req.body.totalDonation = donarData?.totalDonation
-      ? Number(donarData.totalDonation) + 1
-      : 1;
-  }
+  // if (req?.body?.lastDonationDate ) {
+  //   // update total donation
+  //   req.body.totalDonation = donarData?.totalDonation
+  //     ? Number(donarData.totalDonation) + 1
+  //     : 1;
+  // }
 
   // update options
   const updateOptions = {
@@ -174,7 +174,8 @@ const updateBloodDonarById = asyncHandler(async (req, res, next) => {
       id,
     },
     returning: true,
-    plain: true,
+    // check validation for update
+    validate: true,
   });
 
   // if have donar Last donation date then add it to history
