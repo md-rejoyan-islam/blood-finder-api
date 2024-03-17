@@ -93,6 +93,7 @@ const createHistory = asyncHandler(async (req, res, next) => {
     donarId: donar.id,
     lastDonationDate: donar.lastDonationDate,
     phone: donar.phone,
+    editedBy: req?.me?.email,
   });
 
   // response send
@@ -124,7 +125,10 @@ const updateHistory = asyncHandler(async (req, res, next) => {
   if (!history) throw createError(400, "Couldn't find any history data.");
 
   // update history
-  await history.update(req.body);
+  await history.update({
+    ...req.body,
+    editedBy: req?.me?.email,
+  });
 
   // response send
   successResponse(res, {

@@ -76,6 +76,9 @@ const historySchema = {
       notEmpty: true,
     },
   },
+  editedBy: {
+    type: DataTypes.STRING,
+  },
 };
 
 // options

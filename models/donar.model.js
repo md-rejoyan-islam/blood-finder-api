@@ -84,6 +84,9 @@ const donarSchema = {
   comment: {
     type: DataTypes.STRING,
   },
+  lastEditedBy: {
+    type: DataTypes.STRING,
+  },
 };
 
 // schema options

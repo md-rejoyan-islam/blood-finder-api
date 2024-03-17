@@ -56,6 +56,7 @@ const createPatient = asyncHandler(async (req, res, next) => {
   const result = await PatientModel.create({
     id: crypto.randomUUID(),
     ...req.body,
+    editedBy: req?.me?.email,
   });
 
   // response send
@@ -87,9 +88,15 @@ const updatePatientDataById = asyncHandler(async (req, res, next) => {
   if (!patient) throw createError(400, "Couldn't find any patient data.");
 
   // update patient
-  await PatientModel.update(req.body, {
-    where: { id },
-  });
+  await PatientModel.update(
+    {
+      ...req.body,
+      editedBy: req?.me?.email,
+    },
+    {
+      where: { id },
+    }
+  );
 
   // updated data
   const result = await PatientModel.findByPk(id);

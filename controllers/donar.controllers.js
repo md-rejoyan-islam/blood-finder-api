@@ -15,6 +15,7 @@ const crypto = require("crypto");
 const csv = require("csvtojson");
 
 const { readFileSync } = require("fs");
+const { checkBDPhoneNumber, isEmail } = require("../helper/helper");
 
 /**
  *
@@ -125,6 +126,7 @@ const createBloodDonar = asyncHandler(async (req, res, next) => {
   const result = await DonarModel.create({
     ...req.body,
     id: crypto.randomUUID(),
+    lastEditedBy: req?.me?.email,
   });
 
   // response send
@@ -155,17 +157,10 @@ const updateBloodDonarById = asyncHandler(async (req, res, next) => {
   // if donar data not found
   if (!donarData) throw createError(400, "Couldn't find any donar data.");
 
-  // increase total donation
-  // if (req?.body?.lastDonationDate ) {
-  //   // update total donation
-  //   req.body.totalDonation = donarData?.totalDonation
-  //     ? Number(donarData.totalDonation) + 1
-  //     : 1;
-  // }
-
   // update options
   const updateOptions = {
     ...req.body,
+    lastEditedBy: req?.me?.email,
   };
 
   // update donar data
@@ -189,6 +184,7 @@ const updateBloodDonarById = asyncHandler(async (req, res, next) => {
       donarId: id,
       id: crypto.randomUUID(),
       phone: donarData.phone,
+      editedBy: req?.me?.email,
     });
   }
 
@@ -285,7 +281,10 @@ const bulkCreateBloodDonar = asyncHandler(async (req, res, next) => {
   // });
 
   // data  delete from database
-  await DonarModel.bulkCreate(req.body);
+  await DonarModel.bulkCreate({
+    ...req.body,
+    lastEditedBy: req?.me?.email,
+  });
 
   // response send
   successResponse(res, {
@@ -357,6 +356,7 @@ const bulkDeleteBloodDonar = asyncHandler(async (req, res, next) => {
  */
 
 const uploadDonarFile = asyncHandler(async (req, res, next) => {
+  const {} = req.me;
   const file = readFileSync(req.file.path, "utf-8");
 
   // fle type
@@ -415,6 +415,27 @@ const uploadDonarFile = asyncHandler(async (req, res, next) => {
         `Phone number already exists for index : ${index}`
       );
     }
+
+    // phone number validation
+    if (!checkBDPhoneNumber(item?.phone)) {
+      throw createError.BadRequest(
+        `Phone number is not valid for index : ${index}`
+      );
+    }
+
+    // email validation
+
+    if (item?.email && !isEmail(item?.email)) {
+      throw createError.BadRequest(`Email is not valid for index : ${index}`);
+    }
+  });
+
+  // add edited by
+  fileData = fileData.map((data) => {
+    return {
+      ...data,
+      lastEditedBy: req?.me?.email,
+    };
   });
 
   // data  delete from database

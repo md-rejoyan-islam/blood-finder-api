@@ -55,6 +55,10 @@ const patientSchema = {
     type: DataTypes.STRING,
     default: null,
   },
+  editedBy: {
+    type: DataTypes.STRING,
+    default: null,
+  },
   comment: {
     type: DataTypes.STRING,
   },
