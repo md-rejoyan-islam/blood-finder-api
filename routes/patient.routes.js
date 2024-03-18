@@ -15,10 +15,7 @@ patientRouter.use(isLoggedIn);
 
 patientRouter.route("/").get(getAllPatients).post(createPatient);
 
-patientRouter
-  .route("/:id")
-  .put(updatePatientDataById)
-  .delete(authorization("superadmin"), deletePatient);
+patientRouter.route("/:id").put(updatePatientDataById).delete(deletePatient);
 
 // export default patientRouter;
 module.exports = patientRouter;

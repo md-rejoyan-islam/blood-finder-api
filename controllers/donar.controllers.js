@@ -38,7 +38,7 @@ const getAllBloodDonars = asyncHandler(async (req, res, next) => {
     },
     order: queries.sortBy,
     attributes: queries.fields,
-    limit: queries.limit,
+    // limit: queries.limit,
     offset: queries.offset,
   });
   // if no blood found
@@ -127,6 +127,9 @@ const createBloodDonar = asyncHandler(async (req, res, next) => {
     ...req.body,
     id: crypto.randomUUID(),
     lastEditedBy: req?.me?.email,
+    lastDonationDate: req?.body?.lastDonationDate
+      ? req?.body?.lastDonationDate
+      : null,
   });
 
   // response send
